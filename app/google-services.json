@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "588607225338",
+    "firebase_url": "https://thanhxuanfc-3c760.firebaseio.com",
+    "project_id": "thanhxuanfc-3c760",
+    "storage_bucket": "thanhxuanfc-3c760.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:588607225338:android:e7c449c92244af8f",
+        "android_client_info": {
+          "package_name": "com.example.tmcfc.thanhxuanfc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "588607225338-351718u6rq5jm9ghfrqa6c2vuug6k8i9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC04g4w7F5e6884xfVns7VJzxOKUCEySog"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
