@@ -1,6 +1,7 @@
 package com.example.tmcfc.thanhxuanfc.activity;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -15,6 +16,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.android.volley.RequestQueue;
@@ -25,9 +27,15 @@ import com.android.volley.toolbox.Volley;
 import com.example.tmcfc.thanhxuanfc.R;
 import com.example.tmcfc.thanhxuanfc.adapter.MenuAdapter;
 import com.example.tmcfc.thanhxuanfc.model.Menu;
+import com.example.tmcfc.thanhxuanfc.model.UserInformation;
 import com.example.tmcfc.thanhxuanfc.ultil.CheckConnect;
 import com.example.tmcfc.thanhxuanfc.ultil.Server;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -45,8 +53,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private RecyclerView recyclerViewmanhinhchinh;
     private NavigationView navigationView;
     private CircleImageView circleImageView;
+    private TextView edtname, edtnickname;
     private ListView listViewmanhinhchinh;
     private DrawerLayout drawerLayout;
+    DatabaseReference databaseReference;
     ArrayList<Menu> mangmenu;
     MenuAdapter menuAdapter;
     int id = 0;
@@ -61,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         init();
+        setProfile();
         if(CheckConnect.haveNetworkConnection(getApplicationContext())){
             updateUI();
 
@@ -72,10 +83,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             CheckConnect.ShowToast_short(getApplicationContext(), "Bạn hãy kiểm tra lại kết nối!");
             finish();
         }
-
-
-
     }
+
+    private void setProfile(){
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    UserInformation uInfo = new UserInformation();
+                    uInfo.setName(ds.getValue(UserInformation.class).getName());
+                    uInfo.setNickname(ds.getValue(UserInformation.class).getNickname());
+                    uInfo.setImgavatar(ds.getValue(UserInformation.class).getImgavatar());
+
+                    Picasso.get().load(uInfo.getImgavatar()).into(circleImageView);
+                    edtname.setText(uInfo.getName());
+                    edtnickname.setText(uInfo.getNickname());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
 
     private void CatchOnItemListview() {
         listViewmanhinhchinh.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -189,10 +221,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void init() {
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
         toolbar = findViewById(R.id.toolbarmanhinhchinh);
         viewFlipper = findViewById(R.id.viewflipper);
         recyclerViewmanhinhchinh = findViewById(R.id.recyclerview);
         navigationView = findViewById(R.id.navigationview);
+        edtname = findViewById(R.id.tvUsername);
+        edtnickname = findViewById(R.id.tvUsernickname);
         listViewmanhinhchinh = findViewById(R.id.listviewmanhinhchinh);
         drawerLayout = findViewById(R.id.drawablelayout);
         circleImageView = findViewById(R.id.ivAvatar);

@@ -23,25 +23,19 @@ import com.example.tmcfc.thanhxuanfc.model.UserInformation;
 import com.example.tmcfc.thanhxuanfc.ultil.CheckConnect;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.database.core.utilities.ParsedUrl;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
-import java.net.URI;
-import java.util.Calendar;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener{
     private Toolbar toolbar;
@@ -78,6 +72,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         imgAvatar.setOnClickListener(this);
         edtname = findViewById(R.id.edittextnameprofile);
         edtnickname = findViewById(R.id.edittextnicknameprofile);
+        edtname.setOnClickListener(this);
+        edtnickname.setOnClickListener(this);
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
@@ -90,7 +86,16 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                showData(dataSnapshot);
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    UserInformation uInfo = new UserInformation();
+                    uInfo.setName(ds.getValue(UserInformation.class).getName());
+                    uInfo.setNickname(ds.getValue(UserInformation.class).getNickname());
+                    uInfo.setImgavatar(ds.getValue(UserInformation.class).getImgavatar());
+
+                    Picasso.get().load(uInfo.getImgavatar()).into(imgAvatar);
+                    edtname.setText(uInfo.getName());
+                    edtnickname.setText(uInfo.getNickname());
+                }
             }
 
             @Override
@@ -99,24 +104,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             }
         });
     }
-
-    private void showData(DataSnapshot dataSnapshot) {
-        for(DataSnapshot ds:dataSnapshot.getChildren()){
-            UserInformation uInfo = new UserInformation();
-            uInfo.setName(ds.getValue(UserInformation.class).getName());
-            uInfo.setNickname(ds.getValue(UserInformation.class).getNickname());
-            uInfo.setImgavatar(ds.getValue(UserInformation.class).getImgavatar());
-
-            Log.d("AAAAAAAAAABBBBBBB", uInfo.getName() + " " + uInfo.getNickname() + " " + uInfo.getImgavatar());
-
-            Picasso.get().load(uInfo.getImgavatar()).into(imgAvatar);
-            edtname.setText(uInfo.name);
-            edtnickname.setText(uInfo.nickname);
-
-        }
-    }
-
-
     private void ActionBar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -135,6 +122,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.avatarprofile:
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(intent, REQUEST_CODE_IMAGE);
+            case R.id.edittextnameprofile:
+                edtname.setFocusableInTouchMode(true);
+            case R.id.edittextnicknameprofile:
+                edtnickname.setFocusableInTouchMode(true);
         }
     }
 
@@ -216,6 +207,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 });
             }
         });
+//        edtnickname.setFocusable(false);
+//        edtname.setFocusable(false);
 
     }
 

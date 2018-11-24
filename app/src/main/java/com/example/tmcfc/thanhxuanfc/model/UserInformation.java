@@ -15,6 +15,7 @@ public class UserInformation {
         this.imgavatar = imgavatar;
     }
 
+
     public String getName() {
         return name;
     }
