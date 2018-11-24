@@ -30,11 +30,14 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.core.utilities.ParsedUrl;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.net.URI;
@@ -45,6 +48,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private ImageView imgAvatar;
     private EditText edtname, edtnickname;
     FirebaseAuth firebaseAuth;
+    FirebaseUser user;
     DatabaseReference databaseReference;
     FirebaseStorage storage;
     StorageReference storageRef;
@@ -58,6 +62,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_profile);
 
         init();
+        setProfile();
 
         if(CheckConnect.haveNetworkConnection(getApplicationContext())){
             ActionBar();
@@ -74,11 +79,43 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         edtname = findViewById(R.id.edittextnameprofile);
         edtnickname = findViewById(R.id.edittextnicknameprofile);
         firebaseAuth = FirebaseAuth.getInstance();
+        user = firebaseAuth.getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReferenceFromUrl("gs://thanhxuanfc-3c760.appspot.com");
 
     }
+
+    private void setProfile(){
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                showData(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void showData(DataSnapshot dataSnapshot) {
+        for(DataSnapshot ds:dataSnapshot.getChildren()){
+            UserInformation uInfo = new UserInformation();
+            uInfo.setName(ds.getValue(UserInformation.class).getName());
+            uInfo.setNickname(ds.getValue(UserInformation.class).getNickname());
+            uInfo.setImgavatar(ds.getValue(UserInformation.class).getImgavatar());
+
+            Log.d("AAAAAAAAAABBBBBBB", uInfo.getName() + " " + uInfo.getNickname() + " " + uInfo.getImgavatar());
+
+            Picasso.get().load(uInfo.getImgavatar()).into(imgAvatar);
+            edtname.setText(uInfo.name);
+            edtnickname.setText(uInfo.nickname);
+
+        }
+    }
+
 
     private void ActionBar() {
         setSupportActionBar(toolbar);
@@ -120,16 +157,14 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.confirm:
-                saveUserInfo();
                 saveAvatar();
         }
         return super.onOptionsItemSelected(item);
     }
 
     private void saveAvatar() {
-        FirebaseUser user = firebaseAuth.getCurrentUser();
 
-        mountainsRef = storageRef.child(user.getUid()+".png");
+        mountainsRef = storageRef.child(user.getUid());
 
         imgAvatar.setDrawingCacheEnabled(true);
         imgAvatar.buildDrawingCache();
@@ -147,34 +182,41 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+            public void onSuccess(final UploadTask.TaskSnapshot taskSnapshot) {
                 // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
                 // ...
-                Task<Uri> downloadUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl();
-//                Toast.makeText(ProfileActivity.this, "Thành công", Toast.LENGTH_SHORT).show();
-                Log.d("TMC",  downloadUrl + "");
 
-                // save on database
-                String name = edtname.getText().toString().trim();
-                String nick = edtnickname.getText().toString().trim();
-
-                UserInformation userInformation = new UserInformation(name, nick, String.valueOf(downloadUrl));
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                databaseReference.child(user.getUid()).setValue(userInformation, new DatabaseReference.CompletionListener() {
+                storageRef.child(user.getUid()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
-                    public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
-                        if(databaseError == null){
-                            Toast.makeText(ProfileActivity.this, "Lưu thành công!", Toast.LENGTH_SHORT).show();
-                        }else{
-                            Toast.makeText(ProfileActivity.this, "Lỗi lưu dữ liệu!", Toast.LENGTH_SHORT).show();
-                        }
+                    public void onSuccess(Uri uri) {
+                        // Got the download URL for 'users/me/profile.png'
+                        Log.d("AAAAAAAAAAAAAA", uri.toString());
+
+                        // save to database
+                        String name = edtname.getText().toString().trim();
+                        String nick = edtnickname.getText().toString().trim();
+
+                        UserInformation userInformation = new UserInformation(name, nick, String.valueOf(uri));
+                        databaseReference.child(user.getUid()).setValue(userInformation, new DatabaseReference.CompletionListener() {
+                            @Override
+                            public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                                if(databaseError == null){
+                                    Toast.makeText(ProfileActivity.this, "Lưu thành công!", Toast.LENGTH_SHORT).show();
+                                }else{
+                                    Toast.makeText(ProfileActivity.this, "Lưu thất bại!", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle any errors
                     }
                 });
             }
         });
-    }
-
-    private void saveUserInfo() {
 
     }
+
 }

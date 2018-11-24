@@ -14,4 +14,28 @@ public class UserInformation {
         this.nickname = nickname;
         this.imgavatar = imgavatar;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getImgavatar() {
+        return imgavatar;
+    }
+
+    public void setImgavatar(String imgavatar) {
+        this.imgavatar = imgavatar;
+    }
 }
