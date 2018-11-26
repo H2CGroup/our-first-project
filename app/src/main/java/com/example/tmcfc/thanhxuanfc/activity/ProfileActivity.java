@@ -207,9 +207,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 });
             }
         });
-//        edtnickname.setFocusable(false);
-//        edtname.setFocusable(false);
-
+        edtnickname.setFocusable(false);
+        edtname.setFocusable(false);
     }
 
 }

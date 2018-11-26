@@ -2,6 +2,7 @@
 <LinearLayout
     android:weightSum="10"
     android:orientation="horizontal"
+    android:background="@android:color/holo_blue_light"
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center">
@@ -24,17 +25,17 @@
         android:layout_weight="7"
         android:layout_width="0dp"
         android:layout_height="wrap_content">
+
         <LinearLayout
         android:orientation="horizontal"
+            android:textSize="18sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
             android:layout_marginBottom="5dp"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="10dp"
-            android:textColor="#f20"
-            android:textSize="20sp"
-            android:text="Ten:"
+            android:text="Tên:"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <TextView
@@ -42,50 +43,58 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:id="@+id/textviewtencauthu"
-            android:textColor="#f20"
-            android:textSize="20sp"
             android:text="Tran Manh Chung"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
         <LinearLayout
             android:orientation="horizontal"
+            android:textSize="16sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
                 android:layout_marginLeft="10dp"
-                android:textSize="16sp"
-                android:text="Nam Sinh:"
+                android:text="Năm sinh:"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
                 android:id="@+id/textviewnamsinh"
                 android:layout_marginLeft="10dp"
-                android:textSize="16sp"
                 android:text="1997"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
         <LinearLayout
-            android:weightSum="10"
             android:orientation="horizontal"
+            android:textSize="16sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:text="Địa chỉ:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/textviewdiachi"
+                android:layout_marginLeft="10dp"
+                android:text="Thanh Xuân Bắc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
             <LinearLayout
-                android:layout_weight="5"
                 android:orientation="horizontal"
-                android:textSize="14sp"
-                android:layout_width="0dp"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <TextView
                     android:layout_marginLeft="10dp"
-                    android:text="Chieu cao:"
+                    android:text="Chiều cao:"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <TextView
                     android:id="@+id/textviewchieucao"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="5dp"
                     android:text="170"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -93,24 +102,15 @@
                     android:text="cm"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
+                <TextView
+                    android:layout_marginLeft="5dp"
+                    android:text="|"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
-            </LinearLayout>
-            <TextView
-                android:layout_marginBottom="5dp"
-                android:textSize="14sp"
-                android:text="|"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <LinearLayout
-                android:layout_weight="5"
-                android:orientation="horizontal"
-                android:textSize="14sp"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content">
                 <TextView
                     android:layout_marginLeft="10dp"
-                    android:text="Can nang:"
+                    android:text="Cân nặng:"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <TextView
@@ -123,62 +123,40 @@
                     android:text="kg"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
-
             </LinearLayout>
-        </LinearLayout>
         <LinearLayout
-            android:weightSum="10"
             android:orientation="horizontal"
+            android:textSize="16sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-            <LinearLayout
-                android:layout_weight="5"
-                android:orientation="horizontal"
-                android:textSize="14sp"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:layout_marginLeft="10dp"
-                    android:text="Vi tri:"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <TextView
-                    android:id="@+id/textviewvitri"
-                    android:layout_marginLeft="10dp"
-                    android:text="Tien ve canh"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
             <TextView
-                android:layout_marginBottom="5dp"
-                android:textSize="14sp"
+                android:layout_marginLeft="10dp"
+                android:text="Vị trí:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/textviewvitri"
+                android:layout_marginLeft="5dp"
+                android:text="Tien ve canh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_marginLeft="5dp"
                 android:text="|"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:text="Số áo:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/textviewsoao"
+                android:layout_marginLeft="5dp"
+                android:text="8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-            <LinearLayout
-                android:layout_weight="5"
-                android:orientation="horizontal"
-                android:textSize="14sp"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:layout_marginLeft="10dp"
-                    android:text="So ao:"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <TextView
-                    android:id="@+id/textviewsoao"
-                    android:layout_marginLeft="5dp"
-                    android:text="8"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
         </LinearLayout>
-
     </LinearLayout>
-
 </LinearLayout>

@@ -116,9 +116,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 switch (position){
                     case 0:
                         if(CheckConnect.haveNetworkConnection(getApplicationContext())){
-                            finish();
                             Intent intent = new Intent(MainActivity.this, MainActivity.class);
                             startActivity(intent);
+                            finish();
                         }else{
                             CheckConnect.ShowToast_short(getApplicationContext(), "Bạn hãy kiểm tra lại kết nối!");
                         }
@@ -127,6 +127,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     case 1:
                         break;
                     case 2:
+                        startActivity(new Intent(MainActivity.this, InfoPlayerActivity.class));
+                        finish();
                         break;
                     case 3:
                         break;
@@ -175,7 +177,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 CheckConnect.ShowToast_short(getApplicationContext(), error.toString());
             }
         });
-        requestQueue.add(jsonArrayRequest);
+            requestQueue.add(jsonArrayRequest);
     }
 
 

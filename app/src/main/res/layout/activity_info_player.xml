@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@android:color/holo_orange_light"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.InfoPlayerActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbarmanhinhinfoplayer"
+        android:background="#4665ce"
+        app:titleTextColor="@color/colorWhite"
+        app:title="Thông tin cầu thủ"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize">
+
+    </android.support.v7.widget.Toolbar>
+
+    <ListView
+        android:id="@+id/listviewInfo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </ListView>
+
+</LinearLayout>
