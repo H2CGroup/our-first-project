@@ -25,7 +25,9 @@
             android:name=".activity.StartActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activity.ProfileActivity" />
-        <activity android:name=".activity.InfoPlayerActivity"></activity>
+        <activity android:name=".activity.InfoPlayerActivity" />
+        <activity android:name=".activity.GioiThieuActivity" />
+        <activity android:name=".activity.TamDiemActivity"></activity>
     </application>
 
 </manifest>

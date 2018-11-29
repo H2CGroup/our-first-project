@@ -125,12 +125,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         drawerLayout.closeDrawer(GravityCompat.START);
                         break;
                     case 1:
+                        startActivity(new Intent(MainActivity.this, GioiThieuActivity.class));
+                        finish();
                         break;
                     case 2:
                         startActivity(new Intent(MainActivity.this, InfoPlayerActivity.class));
                         finish();
                         break;
                     case 3:
+                        startActivity(new Intent(MainActivity.this, TamDiemActivity.class));
+                        finish();
                         break;
                     case 4:
                         break;
